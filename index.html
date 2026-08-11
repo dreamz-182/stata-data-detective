@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="数据侦探：用闯关的方式学习 Stata 基础实操。"
+    />
+    <title>数据侦探学院 · 从入门到实战 Stata</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">DD</div>
+          <div>
+            <p class="eyebrow">STATA FIELD ACADEMY</p>
+            <h1>数据侦探学院</h1>
+          </div>
+        </div>
+        <div class="topbar-meta">
+          <div class="case-status">
+            <span class="status-dot"></span>
+            <span>案件档案已载入</span>
+          </div>
+          <button class="ghost-button" id="reset-progress" type="button">
+            重置进度
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="sidebar panel">
+          <div class="sidebar-heading">
+            <div>
+              <p class="eyebrow">COURSE MAP</p>
+              <h2>从入门到实战</h2>
+            </div>
+            <span class="case-number">21 MISSIONS</span>
+          </div>
+
+          <div class="progress-block">
+            <div class="progress-label">
+              <span>调查进度</span>
+              <strong id="progress-count">0 / 10</strong>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="level-list" id="level-list" aria-label="关卡列表"></div>
+
+          <div class="sidebar-note">
+            <span class="note-mark">!</span>
+            <p>每过一关，只带走一个新动作。慢一点，反而更容易记住。</p>
+          </div>
+        </aside>
+
+        <section class="mission-column">
+          <div class="mission-header">
+            <div>
+              <p class="eyebrow" id="mission-kicker">MISSION 01 / 10</p>
+              <h2 id="mission-title">打开失踪的调查档案</h2>
+            </div>
+            <div class="mission-tags" id="mission-tags"></div>
+          </div>
+
+          <article class="briefing-card">
+            <div class="stamp">机密</div>
+            <p class="eyebrow">侦探简报</p>
+            <p class="briefing-text" id="mission-story"></p>
+            <div class="objective-box">
+              <span class="objective-index">01</span>
+              <div>
+                <p class="eyebrow">本关目标</p>
+                <strong id="mission-objective"></strong>
+              </div>
+            </div>
+          </article>
+
+          <div class="command-card panel">
+            <div class="command-card-header">
+              <div>
+                <p class="eyebrow">模拟终端</p>
+                <h3>写下你的调查动作</h3>
+              </div>
+              <span class="shortcut">CTRL + ENTER 运行</span>
+            </div>
+            <div class="terminal">
+              <div class="terminal-topline">
+                <span><i></i><i></i><i></i></span>
+                <span>stata-sim / campus_survey</span>
+                <span id="terminal-mode">SIMULATION</span>
+              </div>
+              <div class="terminal-history" id="terminal-history" aria-live="polite"></div>
+              <div class="terminal-input-row">
+                <span class="prompt">.</span>
+                <textarea
+                  id="command-input"
+                  autocomplete="off"
+                  spellcheck="false"
+                  rows="2"
+                  placeholder="输入 Stata 命令，例如：describe"
+                  aria-label="Stata 命令输入框"
+                ></textarea>
+              </div>
+            </div>
+            <div class="command-actions">
+              <button class="primary-button" id="run-command" type="button">
+                运行命令 <span>↵</span>
+              </button>
+              <button class="text-button" id="clear-command" type="button">
+                清空
+              </button>
+              <div class="action-hint">先试试看，系统会告诉你哪里对、哪里还差一步。</div>
+            </div>
+          </div>
+
+          <div class="feedback-card" id="feedback-card" aria-live="polite">
+            <div class="feedback-icon" id="feedback-icon">?</div>
+            <div>
+              <p class="feedback-title" id="feedback-title">等待你的第一个动作</p>
+              <p class="feedback-message" id="feedback-message">
+                不确定也没关系。先根据简报输入一个你认为可能有用的命令。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <aside class="evidence-column">
+          <div class="tabs panel">
+            <button class="tab active" data-tab="data" type="button">数据预览</button>
+            <button class="tab" data-tab="result" type="button">运行结果</button>
+            <button class="tab" data-tab="learn" type="button">学习卡</button>
+          </div>
+
+          <div class="evidence-panel panel" id="data-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">EVIDENCE</p>
+                <h3 id="evidence-title">campus_survey.dta</h3>
+              </div>
+              <span class="row-count" id="row-count">12 obs.</span>
+            </div>
+            <div class="table-wrap">
+              <table id="data-table"></table>
+            </div>
+            <p class="table-caption" id="table-caption"></p>
+          </div>
+
+          <div class="evidence-panel panel hidden" id="result-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">OUTPUT</p>
+                <h3>最后一次运行</h3>
+              </div>
+              <span class="output-badge" id="output-badge">待运行</span>
+            </div>
+            <pre class="output-console" id="output-console">运行命令后，结果会出现在这里。</pre>
+          </div>
+
+          <div class="evidence-panel panel hidden" id="learn-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">FIELD NOTE</p>
+                <h3>本关学习卡</h3>
+              </div>
+              <span class="learn-number" id="learn-number">01</span>
+            </div>
+            <div class="learn-card">
+              <p class="learn-command" id="learn-command">use</p>
+              <p id="learn-summary"></p>
+              <div class="learn-rule">
+                <span>常见误区</span>
+                <strong id="learn-mistake"></strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="hint-panel panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="eyebrow">ASSISTANCE</p>
+                <h3>分层提示</h3>
+              </div>
+              <span class="hint-count" id="hint-count">0 / 3</span>
+            </div>
+            <div class="hint-stack" id="hint-stack"></div>
+            <button class="secondary-button" id="get-hint" type="button">
+              获取下一条提示
+            </button>
+          </div>
+
+          <div class="toolbox-panel panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="eyebrow">TOOLBOX</p>
+                <h3>已解锁命令</h3>
+              </div>
+              <span class="hint-count" id="toolbox-count">0</span>
+            </div>
+            <div class="toolbox-list" id="toolbox-list"></div>
+            <p class="toolbox-note">通关后，命令会加入你的侦探工具箱。</p>
+          </div>
+        </aside>
+      </main>
+
+      <div class="completion-modal hidden" id="completion-modal" role="dialog" aria-modal="true">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card">
+          <button class="modal-close" id="close-modal" type="button" aria-label="关闭">×</button>
+          <div class="modal-emblem">CASE<br />SOLVED</div>
+          <p class="eyebrow">案件已破解</p>
+          <h2 id="modal-title">动作完成</h2>
+          <p id="modal-summary"></p>
+          <div class="modal-code">
+            <span>你带走的命令</span>
+            <code id="modal-command"></code>
+          </div>
+          <div class="modal-footer">
+            <div class="stars" id="modal-stars"></div>
+            <button class="primary-button" id="next-level" type="button">继续调查 <span>→</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
